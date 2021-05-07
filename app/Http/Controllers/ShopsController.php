@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Shop;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ShopsController extends Controller
 {
@@ -14,7 +15,11 @@ class ShopsController extends Controller
      */
     public function index()
     {
-        //
+        $items = Shop::all();
+        return response()->json([
+            'message' => 'OK',
+            'data' => $items
+        ], 200);
     }
 
     /**
@@ -36,7 +41,35 @@ class ShopsController extends Controller
      */
     public function show(Shop $shop)
     {
-        //
+        $item = Shop::where('name', $shop->name)->first();
+        $user_id = $item->user_id;
+        $user = DB::table('users')->where('id', (int)$user_id)->first();
+        $comment = DB::table('comments')->where('share_id', $share->id)->get();
+        $comment_data = array();
+        if (empty($comment->toArray())) {
+            $items = [
+                "item" => $item,
+                "like" => $like,
+                "comment" => $comment_data,
+                "name" => $user->name,
+            ];
+            return response()->json($items, 200);
+        }
+        foreach ($comment as $value) {
+            $comment_user = DB::table('users')->where('id', $value->user_id)->first();
+            $comments = [
+                "comment" => $value,
+                "comment_user" => $comment_user
+            ];
+            array_push($comment_data, $comments);
+        }
+        $items = [
+            "item" => $item,
+            "like" => $like,
+            "comment" => $comment_data,
+            "name" => $user->name,
+        ];
+        return response()->json($items, 200);
     }
 
     /**
