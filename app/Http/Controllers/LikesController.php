@@ -4,18 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
 
 class LikesController extends Controller
 {
-    public function post(Request $request)
+    public function postLike(Request $request, $id)
     {
-        $now = Carbon::now();
         $param = [
-            "shop_id" => $request->shop_id,
+            "shop_id" => $id,
             "user_id" => $request->user_id,
-            "created_at" => $now,
-            "updated_at" => $now
         ];
         DB::table('likes')->insert($param);
         return response()->json([
@@ -23,11 +19,23 @@ class LikesController extends Controller
             'data' => $param
         ], 200);
     }
-    public function delete(Request $request)
+    public function deleteLike(Request $request, $id)
     {
-        DB::table('likes')->where('shop_id', $request->shop_id)->where('user_id', $request->user_id)->delete();
+        DB::table('likes')->where('shop_id', $id)->where('user_id', $request->user_id)->delete();
         return response()->json([
             'message' => 'Like deleted successfully',
         ], 200);
+    }
+    public function getLikes($id)
+    {
+        if ($id) {
+            $likeItems = DB::table('likes')->where('user_id', $id)->get();
+            return response()->json([
+                'message' => 'Likes got successfully',
+                'data' => $likeItems
+            ], 200);
+        } else {
+            return response()->json(['status' => 'not found'], 404);
+        }
     }
 }

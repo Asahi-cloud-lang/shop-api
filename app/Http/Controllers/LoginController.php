@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
 {
-    public function post(Request $request)
+    public function login(Request $request)
     {
         $items = DB::table('users')->where('email', $request->email)->first();
         if (Hash::check($request->password, $items->password)) {

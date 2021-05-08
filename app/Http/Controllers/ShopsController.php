@@ -2,96 +2,38 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Shop;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ShopsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        $items = Shop::all();
+    public function getShops(){
+        $shops = DB::table('shops')->get();
         return response()->json([
-            'message' => 'OK',
-            'data' => $items
+            'message' => 'Shops got successfully',
+            'data' => $shops
+        ], 200);
+        $areas = DB::table('areas')->get();
+        return response()->json([
+            'message' => 'Areas got successfully',
+            'data' => $areas
+        ], 200);
+        $genres = DB::table('genres')->get();
+        return response()->json([
+            'message' => 'Genres got successfully',
+            'data' => $genres
         ], 200);
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Shop  $shop
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Shop $shop)
-    {
-        $item = Shop::where('name', $shop->name)->first();
-        $user_id = $item->user_id;
-        $user = DB::table('users')->where('id', (int)$user_id)->first();
-        $comment = DB::table('comments')->where('share_id', $share->id)->get();
-        $comment_data = array();
-        if (empty($comment->toArray())) {
-            $items = [
-                "item" => $item,
-                "like" => $like,
-                "comment" => $comment_data,
-                "name" => $user->name,
-            ];
-            return response()->json($items, 200);
+    public function getShop($id){
+        if ($id) {
+            $shopItems = DB::table('shops')->where('id', $id)->get();
+            $areaItems = DB::table('areas')->where('id', $shopItems->area_id)->get();
+            $genreItems = DB::table('genres')->where('id', $shopItems->genre_id)->get();
+            return response()->json([
+                'message' => 'Shop got successfully',
+                'data' => $shopItems
+            ], 200);
+        } else {
+            return response()->json(['status' => 'not found'], 404);
         }
-        foreach ($comment as $value) {
-            $comment_user = DB::table('users')->where('id', $value->user_id)->first();
-            $comments = [
-                "comment" => $value,
-                "comment_user" => $comment_user
-            ];
-            array_push($comment_data, $comments);
-        }
-        $items = [
-            "item" => $item,
-            "like" => $like,
-            "comment" => $comment_data,
-            "name" => $user->name,
-        ];
-        return response()->json($items, 200);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Shop  $shop
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Shop $shop)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Shop  $shop
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Shop $shop)
-    {
-        //
     }
 }

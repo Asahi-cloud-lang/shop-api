@@ -9,13 +9,16 @@ use App\Http\Controllers\UsersController;
 use App\Http\Controllers\LikesController;
 use App\Http\Controllers\ReservationsController;
 
-Route::apiResource('/shops', ShopsController::class);
-Route::post('/register', [RegisterController::class, 'post']);
-Route::post('/login', [LoginController::class, 'post']);
-Route::post('/logout', [LogoutController::class, 'post']);
-Route::get('/user/{id}', [UsersController::class, 'get']);
-Route::post('/like', [LikesController::class, 'post']);
-Route::delete('/like', [LikesController::class, 'delete']);
-Route::get('shops/{id}/reservations', [ReservationsController::class, 'get']);
-Route::post('shops/{id}/reservations', [ReservationsController::class, 'post']);
-Route::delete('shops/{id}/reservations', [ReservationsController::class, 'delete']);
+
+Route::post('/register', [RegisterController::class, 'register']);
+Route::post('/login', [LoginController::class, 'login']);
+Route::post('/logout', [LogoutController::class, 'logout']);
+Route::get('/users/{id}', [UsersController::class, 'getUser']);
+Route::get('/shops',[ShopsController::class, 'getShops']);
+Route::get('/shops/{id}', [ShopsController::class, 'getShop']);
+Route::post('/shops/{id}/likes', [LikesController::class, 'postLike']);
+Route::delete('/shops/{id}/likes', [LikesController::class, 'deleteLike']);
+Route::get('/users/{id}/likes', [LikesController::class, 'getLikes']);
+Route::post('/shops/{id}/reservations', [ReservationsController::class, 'postReservations']);
+Route::delete('/shops/{id}/reservations', [ReservationsController::class, 'deleteReservations']);
+Route::get('/users/{id}/reservations', [ReservationsController::class, 'getReservations']);
