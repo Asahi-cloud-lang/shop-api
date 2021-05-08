@@ -8,19 +8,11 @@ class ShopsController extends Controller
 {
     public function getShops(){
         $shops = DB::table('shops')->get();
-        return response()->json([
-            'message' => 'Shops got successfully',
-            'data' => $shops
-        ], 200);
+        $genres = DB::table('genres')->get();
         $areas = DB::table('areas')->get();
         return response()->json([
-            'message' => 'Areas got successfully',
-            'data' => $areas
-        ], 200);
-        $genres = DB::table('genres')->get();
-        return response()->json([
-            'message' => 'Genres got successfully',
-            'data' => $genres
+            'message' => 'Shops got successfully',
+            'data' => $shops , $genres , $areas
         ], 200);
     }
     public function getShop($id){
