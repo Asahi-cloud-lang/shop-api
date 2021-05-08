@@ -30,7 +30,7 @@ class ShopsController extends Controller
             $genreItems = DB::table('genres')->where('id', $shopItems->genre_id)->get();
             return response()->json([
                 'message' => 'Shop got successfully',
-                'data' => $shopItems
+                'data' => $shopItems, $areaItems, $genreItems
             ], 200);
         } else {
             return response()->json(['status' => 'not found'], 404);
