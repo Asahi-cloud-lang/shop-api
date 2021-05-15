@@ -12,8 +12,8 @@ class ReservationsController extends Controller
         $param = [
             "shop_id" => $id,
             "user_id" => $request->user_id,
-            "num_of_users" => $request->number,
-            "reserved_at" => $request->date,
+            "num_of_users" => $request->num_of_users,
+            "reserved_at" => $request->reserved_at,
         ];
         DB::table('reservations')->insert($param);
         return response()->json([

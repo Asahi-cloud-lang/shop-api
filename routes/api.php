@@ -19,6 +19,6 @@ Route::get('/shops/{id}', [ShopsController::class, 'getShop']);
 Route::post('/shops/{id}/likes', [LikesController::class, 'postLike']);
 Route::delete('/shops/{id}/likes', [LikesController::class, 'deleteLike']);
 Route::get('/users/{id}/likes', [LikesController::class, 'getLikes']);
-Route::post('/shops/{id}/reservations', [ReservationsController::class, 'postReservations']);
-Route::delete('/shops/{id}/reservations', [ReservationsController::class, 'deleteReservations']);
+Route::post('/shops/{id}/reservations', [ReservationsController::class, 'postReservation']);
+Route::delete('/shops/{id}/reservations', [ReservationsController::class, 'deleteReservation']);
 Route::get('/users/{id}/reservations', [ReservationsController::class, 'getReservations']);
