@@ -23,7 +23,7 @@ class ReservationsController extends Controller
     }
     public function deleteReservation(Request $request, $id)
     {
-        DB::table('reservations')->where('shop_id', $id)->where('id', $request->reservation_id)->delete();
+        DB::table('reservations')->where('shop_id', $id)->where('user_id', $request->user_id)->delete();
         return response()->json([
             'message' => 'Reservaiton deleted successfully',
         ], 200);
@@ -32,6 +32,17 @@ class ReservationsController extends Controller
     {
         if ($id) {
             $reservationItems = DB::table('reservations')->where('user_id', $id)->get();
+            foreach ($reservationItems as $reservationItem) {
+                $shopItems = DB::table('shops')->where('id', $reservationItem->shop_id)->first();
+                $userItems = DB::table('users')->where('id', $reservationItem->user_id)->first();
+                $areaItems = DB::table('areas')->where('id', $shopItems->area_id)->first();
+                $genreItems = DB::table('genres')->where('id', $shopItems->genre_id)->first();
+                $reservationItem->shop_name = $shopItems->name;
+                $reservationItem->shop_img = $shopItems->img;
+                $reservationItem->user_name = $userItems->name;
+                $reservationItem->area_name = $areaItems->name;
+                $reservationItem->genre_name = $genreItems->name;
+            }
             return response()->json([
                 'message' => 'Reservations got successfully',
                 'data' => $reservationItems

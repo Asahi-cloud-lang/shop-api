@@ -10,7 +10,7 @@ class UsersController extends Controller
     public function getUser($id)
     {
         if ($id) {
-            $userItems = DB::table('users')->where('id', $id)->get();
+            $userItems = DB::table('users')->where('id', $id)->first();
             return response()->json([
                 'message' => 'User got successfully',
                 'data' => $userItems
