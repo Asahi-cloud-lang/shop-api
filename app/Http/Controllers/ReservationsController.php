@@ -51,4 +51,41 @@ class ReservationsController extends Controller
             return response()->json(['status' => 'not found'], 404);
         }   
     }
+
+    public function putReservation(Request $request, $id, $shopid)
+    {
+        $param = [
+            'reserved_at' => $request->reserved_at,
+            'num_of_users' => $request->num_of_users
+        ];
+        DB::table('reservations')->where('user_id', $id)->where('shop_id', $shopid)->update($param);
+        return response()->json([
+            'message' => 'Reservation updated successfully',
+            'data' => $param
+        ], 200);
+    }
+
+    public function getReservation($id, $shopid)
+    {
+        if ($id) {
+            $reservationItems = DB::table('reservations')->where('user_id', $id)->where('shop_id', $shopid)->get();
+            foreach ($reservationItems as $reservationItem) {
+                $shopItems = DB::table('shops')->where('id', $reservationItem->shop_id)->first();
+                $userItems = DB::table('users')->where('id', $reservationItem->user_id)->first();
+                $areaItems = DB::table('areas')->where('id', $shopItems->area_id)->first();
+                $genreItems = DB::table('genres')->where('id', $shopItems->genre_id)->first();
+                $reservationItem->shop_name = $shopItems->name;
+                $reservationItem->shop_img = $shopItems->img;
+                $reservationItem->user_name = $userItems->name;
+                $reservationItem->area_name = $areaItems->name;
+                $reservationItem->genre_name = $genreItems->name;
+            }
+            return response()->json([
+                'message' => 'Reservation got successfully',
+                'data' => $reservationItems
+            ], 200);
+        } else {
+            return response()->json(['status' => 'not found'], 404);
+        }
+    }
 }
