@@ -8,7 +8,7 @@ use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\LikesController;
 use App\Http\Controllers\ReservationsController;
-
+use App\Http\Controllers\EvaluationsController;
 
 Route::post('/register', [RegisterController::class, 'register']);
 Route::post('/login', [LoginController::class, 'login']);
@@ -20,7 +20,9 @@ Route::post('/shops/{id}/likes', [LikesController::class, 'postLike']);
 Route::delete('/shops/{id}/likes', [LikesController::class, 'deleteLike']);
 Route::get('/users/{id}/likes', [LikesController::class, 'getLikes']);
 Route::post('/shops/{id}/reservations', [ReservationsController::class, 'postReservation']);
-Route::delete('/shops/{id}/reservations', [ReservationsController::class, 'deleteReservation']);
 Route::get('/users/{id}/reservations', [ReservationsController::class, 'getReservations']);
+Route::delete('/shops/{id}/reservations/{reservationid}', [ReservationsController::class, 'deleteReservation']);
 Route::put('/users/{id}/reservations/{shopid}', [ReservationsController::class, 'putReservation']);
-Route::get('/users/{id}/reservations/{shopid}', [ReservationsController::class, 'getReservation']);
+Route::get('/users/{id}/shops/{shopid}/reservations/{reservationid}', [ReservationsController::class, 'getReservation']);
+Route::put('/users/{id}/evaluations/{shopid}', [EvaluationsController::class, 'putEvaluation']);
+Route::post('/users/{id}/evaluations/{shopid}', [EvaluationsController::class, 'postEvaluation']);
