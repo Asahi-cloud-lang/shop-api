@@ -14,7 +14,7 @@ class CreateEvaluationsTable extends Migration
     public function up()
     {
         Schema::create('evaluations', function (Blueprint $table) {
-            $table->id();
+            $table->id()->autoIncrement();
             $table->foreignId('shop_id')->constrained();
             $table->foreignId('user_id')->constrained();
             $table->integer('num_of_stars');
